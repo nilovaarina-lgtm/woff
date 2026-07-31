@@ -99,9 +99,11 @@
     var i = 0, startX = 0, dx = 0, w = 0, dragging = false;
     var EASE = 'transform .32s cubic-bezier(.22,.61,.36,1)';
 
+    function gap(){ return parseFloat(getComputedStyle(track).gap) || 0; }
+    function offset(){ return i * (view.clientWidth + gap()); }
     function place(anim){
       track.style.transition = (anim && !reduce) ? EASE : 'none';
-      track.style.transform  = 'translateX(' + (-i * 100) + '%)';
+      track.style.transform  = 'translateX(' + (-offset()) + 'px)';
       dots.forEach(function(d,k){ d.classList.toggle('is-on', k === i); });
     }
     function down(e){
@@ -112,7 +114,7 @@
     function move(e){
       if(!dragging) return;
       dx = e.clientX - startX;
-      track.style.transform = 'translateX(' + ((-i * 100) + (dx / w * 100)) + '%)';
+      track.style.transform = 'translateX(' + (-(offset()) + dx) + 'px)';
     }
     function up(){
       if(!dragging) return;
